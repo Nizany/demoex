@@ -1,6 +1,7 @@
 from database.connection import session
-from database.models.ProductTypeModel import ProductTypeModel
-from database.models.MaterialModel import MaterialModel
+from database.models.Material import MaterialModel
+from database.models.ProductType import ProductTypeModel
+
 
 def calculate_material_amount(product_type_id: int, material_type_id: int, product_quantity: int,
                               param_length: float, param_width: float) -> int:
@@ -16,19 +17,19 @@ def calculate_material_amount(product_type_id: int, material_type_id: int, produ
     """
     try:
         # Проверка входных данных
-        if not (isinstance(product_type_id, int) and isinstance(material_type_id, int) and product_type_id > 0 and material_type_id > 0):
+        if not (isinstance(product_type_id, int) and isinstance(material_type_id,
+                                                                int) and product_type_id > 0 and material_type_id > 0):
             return -1
         if not (isinstance(product_quantity, int) and product_quantity > 0):
             return -1
-        if not (isinstance(param_length, (float, int)) and isinstance(param_width, (float, int)) and param_length > 0 and param_width > 0):
+        if not (isinstance(param_length, (float, int)) and isinstance(param_width, (
+                float, int)) and param_length > 0 and param_width > 0):
             return -1
 
-        # Получение коэффициента типа продукции и процента брака из базы данных
-        from database.CRUDs.ProductTypeCRUDs import ProductTypeCRUD
-        from database.CRUDs.MaterialCRUDs import MaterialCRUD
-
-        product_coefficient = ProductTypeCRUD.get_coefficient(product_type_id)
-        defect_rate = MaterialCRUD.get_percentage_of_defective_material_by_id(material_type_id)
+        product_coefficient = session.query(ProductTypeModel.coefficient_of_product_type).filter(
+            ProductTypeModel.id == product_type_id).scalar()
+        defect_rate = session.query(MaterialModel.percentage_of_defective_material) \
+            .filter(MaterialModel.id == material_type_id).scalar()
 
         if product_coefficient is None or defect_rate is None:
             return -1
@@ -43,6 +44,7 @@ def calculate_material_amount(product_type_id: int, material_type_id: int, produ
     except Exception as e:
         print(f"Ошибка: {e}")
         return -1
+
 
 def console_interface(session: session):
     """
@@ -97,10 +99,12 @@ def console_interface(session: session):
                 else:
                     print("Все значения должны быть положительными числами. Попробуйте ещё раз.")
             except ValueError:
-                print("Некорректный ввод. Убедитесь, что количество целое, а параметры вещественные. Попробуйте ещё раз.")
+                print(
+                    "Некорректный ввод. Убедитесь, что количество целое, а параметры вещественные. Попробуйте ещё раз.")
 
         # Расчёт количества материала
-        result = calculate_material_amount(product_type_id, material_type_id, product_quantity, param_length, param_width)
+        result = calculate_material_amount(product_type_id, material_type_id, product_quantity, param_length,
+                                           param_width)
 
         # Вывод результата
         if result == -1:

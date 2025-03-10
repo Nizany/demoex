@@ -1,8 +1,9 @@
 from PySide6.QtWidgets import QWidget
 
 # Импорт CRUD операций для работы с заказами и продуктами
-from database.CRUDs.OrderCRUDs import OrderCRUD
-from database.CRUDs.ProductCRUDs import ProductCRUD
+from database.connection import session
+from database.models.Order import OrderModel
+from database.models.Product import ProductModel
 # Импорт пользовательского интерфейса для карточки заказа
 from myui.widgets.OrderCard import Ui_OrderCard
 # Импорт пользовательского интерфейса для страницы заказов
@@ -46,9 +47,9 @@ class OrderPageWidget(QWidget, Ui_OrdersPage):
         self.BackButton.clicked.connect(lambda: MainWindow.switch_to_partner_page(controller))
 
         # Получаем заказы для указанного партнёра и добавляем их на страницу
-        for order in OrderCRUD.read_orders_by_company_id(partner_id):
+        for order in session.query(OrderModel).filter(OrderModel.fk_company_id == partner_id).all():
             custom_widget = OrderCardWidget(
-                str(ProductCRUD.get_product_name(order.fk_product_id)),  # Получаем название продукта
+                str(session.query(ProductModel.name).filter(ProductModel.id == order.fk_product_id).scalar()),  # Получаем название продукта
                 str(order.quantity_of_products),  # Количество продукции
                 str(order.date_of_create)  # Дата создания заказа
             )

@@ -4,7 +4,7 @@ from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QWidget, QMessageBox, QComboBox
 
 from database.connection import session
-from database.models.PartnerModel import PartnerModel
+from database.models.Partner import PartnerModel
 from myui.widgets.CreateUpdatePage import Ui_CreateUpdatePage
 
 

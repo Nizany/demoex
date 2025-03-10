@@ -1,20 +1,20 @@
 from openpyxl import load_workbook
 
 from database.connection import Base, engine, session
-from database.models.MaterialModel import MaterialModel
-from database.models.OrderModel import OrderModel
-from database.models.PartnerModel import PartnerModel
-from database.models.ProductModel import ProductModel
-from database.models.ProductTypeModel import ProductTypeModel
+from database.models.Material import MaterialModel
+from database.models.Order import OrderModel
+from database.models.Partner import PartnerModel
+from database.models.Product import ProductModel
+from database.models.ProductType import ProductTypeModel
 
 # база данных создается
 Base.metadata.create_all(engine)
 
-product_type_file = "../excel/Product_type_import.xlsx"
-products_file = "../excel/Products_import.xlsx"
-partners_file = "../excel/Partners_import.xlsx"
-sales_history_file = "../excel/Partner_products_import.xlsx"
-materials_file = "../excel/Material_type_import.xlsx"
+product_type_file = "excel/Product_type_import.xlsx"
+products_file = "excel/Products_import.xlsx"
+partners_file = "excel/Partners_import.xlsx"
+sales_history_file = "excel/Partner_products_import.xlsx"
+materials_file = "excel/Material_type_import.xlsx"
 
 
 def import_product_types(session):
