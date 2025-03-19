@@ -3,10 +3,10 @@ import sys
 from PySide6.QtWidgets import QWidget, QMessageBox
 
 from database.connection import session
-from database.models.Order import OrderModel
-from database.models.Partner import PartnerModel
-from myui.widgets.PartnerCardWithButton import Ui_PartnerCardWithButton
-from myui.widgets.PartnerPageWidget import Ui_PartnersPage
+from database.models.Order import Order
+from database.models.Partner import Partner
+from ui.widgets.PartnerCardWithButton import Ui_PartnerCardWithButton
+from ui.widgets.PartnerPageWidget import Ui_PartnersPage
 
 
 class PartnerPage(QWidget, Ui_PartnersPage):
@@ -41,7 +41,7 @@ class PartnerPage(QWidget, Ui_PartnersPage):
 
     def fill_scroll_area(self):
         # Добавление виджетов партнёров в область прокруткиыв
-        for partner_model in session.query(PartnerModel).order_by(PartnerModel.id).all():
+        for partner_model in session.query(Partner).order_by(Partner.id).all():
             custom_widget = PartnerCardWidget(self.controller, partner_model)
             self.verticalLayout_2.addWidget(custom_widget)
 
@@ -76,8 +76,8 @@ def calculation_of_discount_percentage(partner_id: int) -> int:
     discount_percentage = 0
     total_amount_of_order = 0
 
-    for order in session.query(OrderModel).filter(OrderModel.fk_company_id == partner_id).all():
-        total_amount_of_order += order.quantity_of_products
+    for order in session.query(Order).filter(Order.fk_company_id == partner_id).all():
+        total_amount_of_order += order.amount_of_products
 
     if 0 < total_amount_of_order < 1000:
         discount_percentage = 0

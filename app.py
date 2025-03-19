@@ -4,9 +4,9 @@ from PySide6.QtCore import QTranslator, QLibraryInfo
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QApplication, QMainWindow, QStackedWidget
 
-from myui.pages.create_update import CreateUpdatePageWidget
-from myui.pages.orders_page import OrderPageWidget
-from myui.pages.partner_page import PartnerPage
+from ui.pages.create_update import CreateUpdatePageWidget
+from ui.pages.orders_page import OrderPageWidget
+from ui.pages.partner_page import PartnerPage
 
 
 class MainWindow(QMainWindow):
@@ -82,7 +82,7 @@ if __name__ == "__main__":
     app.installTranslator(translator)
     window = MainWindow()
     # Устанавливаем иконку приложения
-    window.setWindowIcon(QPixmap("myui/icons/Master_pol.ico"))
+    window.setWindowIcon(QPixmap("ui/icons/Master_pol.ico"))
     # Отображаем главное окно
     window.show()
     # Запускаем цикл обработки событий приложения

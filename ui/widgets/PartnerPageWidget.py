@@ -40,7 +40,7 @@ class Ui_PartnersPage(object):
         self.label = QLabel(self.title)
         self.label.setObjectName(u"label")
         self.label.setMaximumSize(QSize(100, 80))
-        self.label.setPixmap(QPixmap(u"myui/icons/Master_pol.png"))
+        self.label.setPixmap(QPixmap(u"ui/icons/Master_pol.png"))
         self.label.setScaledContents(True)
 
         self.horizontalLayout.addWidget(self.label)

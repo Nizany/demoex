@@ -4,8 +4,8 @@ from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QWidget, QMessageBox, QComboBox
 
 from database.connection import session
-from database.models.Partner import PartnerModel
-from myui.widgets.CreateUpdatePage import Ui_CreateUpdatePage
+from database.models.Partner import Partner
+from ui.widgets.CreateUpdatePage import Ui_CreateUpdatePage
 
 
 class CreateUpdatePageWidget(QWidget, Ui_CreateUpdatePage):
@@ -46,7 +46,7 @@ class CreateUpdatePageWidget(QWidget, Ui_CreateUpdatePage):
             raise ValueError("partner_id должен быть указан в режиме 'update'.")
 
         # Получение данных партнёра
-        partner = self.session.query(PartnerModel).filter_by(id=self.partner_id).first()
+        partner = self.session.query(Partner).filter_by(id=self.partner_id).first()
         if not partner:
             raise ValueError(f"Партнёр с ID {self.partner_id} не найден.")
 
@@ -134,12 +134,12 @@ class CreateUpdatePageWidget(QWidget, Ui_CreateUpdatePage):
 
             # Логика создания или обновления партнёра
             if self.mode == "create":
-                new_partner = PartnerModel(**data)
+                new_partner = Partner(**data)
                 self.session.add(new_partner)
                 self.session.commit()
                 QMessageBox.information(self, "Успех", "Партнёр успешно создан!")
             elif self.mode == "update":
-                partner = self.session.query(PartnerModel).filter_by(id=self.partner_id).first()
+                partner = self.session.query(Partner).filter_by(id=self.partner_id).first()
                 if not partner:
                     raise ValueError(f"Партнёр с ID {self.partner_id} не найден.")
                 for key, value in data.items():

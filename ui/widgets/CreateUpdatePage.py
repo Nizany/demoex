@@ -20,7 +20,7 @@ class Ui_CreateUpdatePage(object):
             CreateUpdatePage.setObjectName(u"CreateUpdatePage")
         CreateUpdatePage.resize(500, 362)
         CreateUpdatePage.setMinimumSize(QSize(0, 0))
-        CreateUpdatePage.setStyleSheet(u"background-color: #F4E8D3; color: black;")
+        CreateUpdatePage.setStyleSheet(u"background-color: #ffffff; color: black;")
         self.verticalLayout_2 = QVBoxLayout(CreateUpdatePage)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.frame = QFrame(CreateUpdatePage)

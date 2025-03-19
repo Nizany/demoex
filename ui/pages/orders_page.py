@@ -2,12 +2,12 @@ from PySide6.QtWidgets import QWidget
 
 # Импорт CRUD операций для работы с заказами и продуктами
 from database.connection import session
-from database.models.Order import OrderModel
-from database.models.Product import ProductModel
+from database.models.Order import Order
+from database.models.Product import Product
 # Импорт пользовательского интерфейса для карточки заказа
-from myui.widgets.OrderCard import Ui_OrderCard
+from ui.widgets.OrderCard import Ui_OrderCard
 # Импорт пользовательского интерфейса для страницы заказов
-from myui.widgets.OrdersPage import Ui_OrdersPage
+from ui.widgets.OrdersPage import Ui_OrdersPage
 
 
 class OrderCardWidget(QWidget, Ui_OrderCard):
@@ -47,10 +47,10 @@ class OrderPageWidget(QWidget, Ui_OrdersPage):
         self.BackButton.clicked.connect(lambda: MainWindow.switch_to_partner_page(controller))
 
         # Получаем заказы для указанного партнёра и добавляем их на страницу
-        for order in session.query(OrderModel).filter(OrderModel.fk_company_id == partner_id).all():
+        for order in session.query(Order).filter(Order.fk_company_id == partner_id).all():
             custom_widget = OrderCardWidget(
-                str(session.query(ProductModel.name).filter(ProductModel.id == order.fk_product_id).scalar()),  # Получаем название продукта
-                str(order.quantity_of_products),  # Количество продукции
+                str(session.query(Product.name).filter(Product.id == order.fk_product_id).scalar()),  # Получаем название продукта
+                str(order.amount_of_products),  # Количество продукции
                 str(order.date_of_create)  # Дата создания заказа
             )
             self.verticalLayout_4.addWidget(custom_widget)  # Добавляем виджет в вертикальный макет

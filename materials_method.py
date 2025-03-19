@@ -1,6 +1,6 @@
 from database.connection import session
-from database.models.Material import MaterialModel
-from database.models.ProductType import ProductTypeModel
+from database.models.Material import Material
+from database.models.ProductType import ProductType
 
 
 def calculate_material_amount(product_type_id: int, material_type_id: int, product_quantity: int,
@@ -26,10 +26,10 @@ def calculate_material_amount(product_type_id: int, material_type_id: int, produ
                 float, int)) and param_length > 0 and param_width > 0):
             return -1
 
-        product_coefficient = session.query(ProductTypeModel.coefficient_of_product_type).filter(
-            ProductTypeModel.id == product_type_id).scalar()
-        defect_rate = session.query(MaterialModel.percentage_of_defective_material) \
-            .filter(MaterialModel.id == material_type_id).scalar()
+        product_coefficient = session.query(ProductType.coefficient_of_product_type).filter(
+            ProductType.id == product_type_id).scalar()
+        defect_rate = session.query(Material.percentage_of_defective_material) \
+            .filter(Material.id == material_type_id).scalar()
 
         if product_coefficient is None or defect_rate is None:
             return -1
@@ -54,7 +54,7 @@ def console_interface(session: session):
     try:
         # Вывод доступных типов продукции
         print("Доступные типы продукции:")
-        product_types = session.query(ProductTypeModel).all()
+        product_types = session.query(ProductType).all()
         if not product_types:
             print("Нет доступных типов продукции.")
             return
@@ -72,7 +72,7 @@ def console_interface(session: session):
 
         # Вывод доступных типов материалов
         print("Доступные типы материалов:")
-        material_types = session.query(MaterialModel).all()
+        material_types = session.query(Material).all()
         if not material_types:
             print("Нет доступных типов материалов.")
             return
